@@ -52,45 +52,49 @@ pagination.appendChild(pagesul);
 
 
 
-
-
 for (let i = 0; i < totalPages; i++) {
     let pageItem = document.createElement("li");
     pageItem.classList.add("page-item");
-    pageItem.setAttribute("data-start", i * itemsPerPage); // Index de départ pour chaque page
+    pageItem.setAttribute("data-start", i * itemsPerPage);
 
     let pageLink = document.createElement("a");
     pageLink.classList.add("page-link", "font-weight-bold", "text-dark", "unselectedPaginator");
-    pageLink.textContent = i + 1; // Numéro de la page
+    pageLink.textContent = i + 1;
+
+    if (i === 0) {
+        pageLink.classList.remove("unselectedPaginator");
+        pageLink.classList.add("selectedPaginator");
+    }
 
     pagesul.appendChild(pageItem);
     pageItem.appendChild(pageLink);
 
-    // Ajouter un gestionnaire de clic pour changer la page affichée
     pageLink.addEventListener("click", function () {
         let start = parseInt(pageItem.getAttribute("data-start"));
         displayShoes(start, itemsPerPage);
 
+        
+        document.querySelectorAll(".page-link").forEach(link => {
+            link.classList.remove("selectedPaginator");
+            link.classList.add("unselectedPaginator");
+        });
 
-        pageLink.addEventListener("click", () => {
-            document.querySelectorAll(".page-Link").forEach(link => {
-                link.classList.remove("selectedPaginator");
-                link.classList.add("unselectedPaginator");
-            });
-            pageLink.classList.add("selectedPaginator");
-            pageLink.classList.remove("unselectedPaginator");
-        })
-
+       
+        pageLink.classList.add("selectedPaginator");
+        pageLink.classList.remove("unselectedPaginator");
     });
-
-
-
 }
 
-// Fonction pour afficher les chaussures selon la page
+
+
+
+
+
+
+
 function displayShoes(start, itemsPerPage) {
-    shoesList.innerHTML = ""; // Vider la liste actuelle
-    let currentPageShoes = shoes.slice(start, start + itemsPerPage); // Obtenir les chaussures de la page
+    shoesList.innerHTML = ""; 
+    let currentPageShoes = shoes.slice(start, start + itemsPerPage); 
     currentPageShoes.forEach((shoes) => {
         let shoesItem = document.createElement("div");
         shoesItem.classList.add("col-lg-4", "col-md-6", "col-12", "d-flex", "align-items-center", "justify-content-center", "position-relative", "shoe", "showShoe");
@@ -113,5 +117,4 @@ function displayShoes(start, itemsPerPage) {
 
 
 
-// Afficher la première page par défaut
 displayShoes(0, itemsPerPage);
